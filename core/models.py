@@ -19,3 +19,13 @@ class Answer(models.Model):
     def __str__(self):
         return self.text
 
+    def save(self, *args, **kwargs):
+        answers = Answer.objects.filter(question=self.question)
+        flag = False
+        for answer in answers:
+            if answer.correct:
+                flag = True
+                break
+        if flag and self.correct:
+            raise ValidationError('Question can not have more than 1 correct answer')
+        super(Answer, self).save(*args, **kwargs)
