@@ -10,4 +10,4 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['text', 'question', 'correct']
