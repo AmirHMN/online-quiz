@@ -13,7 +13,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.CharField(max_length=250)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     correct = models.BooleanField(default=False)
 
     def __str__(self):
