@@ -2,13 +2,19 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 
-# Create your models here.
+class Quiz(models.Model):
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
 
 class Question(models.Model):
     text = models.CharField(max_length=250)
+    quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT,related_name='questions')
 
     def __str__(self):
-        return self.text
+        return f"Quiz: {self.quiz} , question: {self.text}"
 
 
 class Answer(models.Model):
