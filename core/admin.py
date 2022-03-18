@@ -11,3 +11,4 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ['text', 'question', 'correct']
+    list_editable = ['correct']
