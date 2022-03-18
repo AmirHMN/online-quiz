@@ -1,11 +1,19 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from .models import Question
-from .serializers import QuestionSerializer
+from .models import Quiz, Question
+from .serializers import QuestionSerializer, QuizSerializer
 
 
-class QuestionView(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
+class QuizViewSet(viewsets.ModelViewSet):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+
+
+class QuestionViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        print(self.kwargs)
+        return Question.objects.filter(quiz_id=self.kwargs['quiz_pk'])
+
     serializer_class = QuestionSerializer
 
     def get_permissions(self):
