@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .models import Question
 from .serializers import QuestionSerializer
 
@@ -12,4 +12,4 @@ class QuestionView(viewsets.ModelViewSet):
         if self.action in ['list', 'destroy', 'update', 'partial_update']:
             return [IsAdminUser()]
         else:
-            return super().get_permissions()
+            return [IsAuthenticated()]
