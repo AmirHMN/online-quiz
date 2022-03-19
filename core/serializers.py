@@ -34,3 +34,22 @@ class SubmitAnswerSerializer(serializers.Serializer):
             answer = ConfirmedAnswer.objects.create(user_profile=user_profile,
                                                     answer_id=self.validated_data['answer_id'])
             return answer
+
+
+class ConfirmedAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConfirmedAnswer
+        fields = ['question_id', 'answer_id', 'correct_answer']
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    correct_count = serializers.SerializerMethodField()
+    confirmed_answers = ConfirmedAnswerSerializer(many=True)
+
+    def get_correct_count(self, answer):
+        return ConfirmedAnswer.objects.filter(user_profile__user=self.context['request'].user,
+                                              correct_answer=True).count()
+
+    class Meta:
+        model = ConfirmedAnswer
+        fields = ['confirmed_answers', 'correct_count']

@@ -1,6 +1,8 @@
 from rest_framework import viewsets
-from .models import Quiz, Question
-from .serializers import QuestionSerializer, QuizSerializer, SubmitAnswerSerializer
+from .models import Quiz, Question, UserProfile, ConfirmedAnswer
+from .serializers import QuestionSerializer, QuizSerializer, SubmitAnswerSerializer, ConfirmedAnswerSerializer, \
+    UserProfileSerializer
+from rest_framework.generics import ListAPIView
 
 
 class QuizViewSet(viewsets.ModelViewSet):
@@ -17,3 +19,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
         if self.request.method == 'POST':
             return SubmitAnswerSerializer
         return QuestionSerializer
+
+
+class ResultView(ListAPIView):
+    def get_queryset(self):
+        return UserProfile.objects.filter(user=self.request.user)
+
+    serializer_class = UserProfileSerializer

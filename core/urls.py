@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import QuestionViewSet, QuizViewSet
+from .views import QuestionViewSet, QuizViewSet, ResultView
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
@@ -9,5 +9,6 @@ quiz_router.register('questions', QuestionViewSet, basename='question')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('', include(quiz_router.urls))
+    path('', include(quiz_router.urls)),
+    path('result/', ResultView.as_view())
 ]

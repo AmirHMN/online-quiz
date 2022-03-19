@@ -48,14 +48,17 @@ class Answer(models.Model):
 class ConfirmedAnswer(models.Model):
     question_id = models.IntegerField(blank=True)
     answer_id = models.IntegerField()
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    correct_answer = models.BooleanField(blank=True)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='confirmed_answers')
 
     def save(self, *args, **kwargs):
-        self.question_id = Answer.objects.get(id=self.answer_id).question.pk
+        answer = Answer.objects.get(id=self.answer_id)
+        self.question_id = answer.question.pk
+        self.correct_answer = answer.correct
         super(ConfirmedAnswer, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.user_profile.__str__() + ' , ' + Answer.objects.get(id=self.answer_id).__str__()
+        return self.user_profile.__str__()
 
     class Meta:
         unique_together = ['user_profile', 'question_id']

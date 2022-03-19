@@ -22,7 +22,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(ConfirmedAnswer)
 class ConfirmedAnswerAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user_profile', 'question_id', 'answer_id']
 
 
 @admin.register(Answer)
