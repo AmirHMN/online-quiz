@@ -2,19 +2,26 @@ from django.contrib import admin
 from .models import Quiz, Question, Answer, ConfirmedAnswer
 
 
-# Register your models here.
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
     pass
 
 
+class AnswerTabInlineAdmin(admin.TabularInline):
+    model = Answer
+    fields = ['text']
+    min_num = 4
+    max_num = 4
+
+
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['text', 'quiz']
+    inlines = [AnswerTabInlineAdmin]
 
 
 @admin.register(ConfirmedAnswer)
-class QuestionAdmin(admin.ModelAdmin):
+class ConfirmedAnswerAdmin(admin.ModelAdmin):
     pass
 
 
