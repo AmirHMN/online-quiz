@@ -9,7 +9,7 @@ class QuizAdmin(admin.ModelAdmin):
 
 class AnswerTabInlineAdmin(admin.TabularInline):
     model = Answer
-    fields = ['text']
+    fields = ['text', 'correct']
     min_num = 4
     max_num = 4
 

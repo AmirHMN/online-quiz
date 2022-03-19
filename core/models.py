@@ -22,7 +22,7 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, related_name='questions')
 
     def __str__(self):
-        return f"Quiz: {self.quiz} , question: {self.text}"
+        return self.text
 
 
 class Answer(models.Model):
@@ -31,7 +31,7 @@ class Answer(models.Model):
     correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.question.__str__() + " , answer: " + self.text
+        return self.text
 
     def save(self, *args, **kwargs):
         answers = Answer.objects.filter(question=self.question)
