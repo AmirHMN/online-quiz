@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Quiz, Question, Answer, ConfirmedAnswer
+from .models import Group, Question, Answer, SubmittedAnswer
 
 
-@admin.register(Quiz)
-class QuizAdmin(admin.ModelAdmin):
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin):
     pass
 
 
@@ -16,13 +16,14 @@ class AnswerTabInlineAdmin(admin.TabularInline):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ['text', 'quiz']
+    list_display = ['text', 'group']
     inlines = [AnswerTabInlineAdmin]
 
 
-@admin.register(ConfirmedAnswer)
-class ConfirmedAnswerAdmin(admin.ModelAdmin):
-    list_display = ['user_profile', 'question_id', 'answer_id']
+@admin.register(SubmittedAnswer)
+class SubmittedAnswerAdmin(admin.ModelAdmin):
+    list_display = ['user_profile', 'group_id', 'question_id', 'answer_id', 'submitted_at']
+    pass
 
 
 @admin.register(Answer)

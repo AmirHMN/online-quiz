@@ -1,14 +1,14 @@
 from django.urls import path, include
-from .views import QuestionViewSet, QuizViewSet, ResultView
+from .views import QuestionViewSet, GroupViewSet, ResultViewSet
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
-router.register('quiz', QuizViewSet, basename='quiz')
-quiz_router = routers.NestedDefaultRouter(router, 'quiz', lookup='quiz')
-quiz_router.register('questions', QuestionViewSet, basename='question')
+router.register('group', GroupViewSet, basename='group')
+router.register('result', ResultViewSet, basename='result')
+group_router = routers.NestedDefaultRouter(router, 'group', lookup='group')
+group_router.register('questions', QuestionViewSet, basename='question')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('', include(quiz_router.urls)),
-    path('result/', ResultView.as_view())
+    path('', include(group_router.urls)),
 ]
