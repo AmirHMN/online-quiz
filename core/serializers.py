@@ -1,6 +1,6 @@
 from django.db import transaction
 from rest_framework import serializers
-from .models import Question, Answer, Quiz, ConfirmedAnswer, UserProfile
+from .models import Question, Answer, Group, SubmittedAnswer, UserProfile
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -14,15 +14,15 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['text', 'answers']
+        fields = ['id', 'text', 'answers']
 
 
-class QuizSerializer(serializers.ModelSerializer):
+class GroupSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Quiz
-        fields = ['title', 'questions']
+        model = Group
+        fields = ['id', 'title', 'questions']
 
 
 class SubmitAnswerSerializer(serializers.Serializer):
@@ -31,25 +31,24 @@ class SubmitAnswerSerializer(serializers.Serializer):
     def save(self, **kwargs):
         with transaction.atomic():
             user_profile = UserProfile.objects.get(user=self.context['request'].user)
-            answer = ConfirmedAnswer.objects.create(user_profile=user_profile,
+            answer = SubmittedAnswer.objects.create(user_profile=user_profile,
                                                     answer_id=self.validated_data['answer_id'])
             return answer
 
 
-class ConfirmedAnswerSerializer(serializers.ModelSerializer):
+class SubmittedAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ConfirmedAnswer
-        fields = ['question_id', 'answer_id', 'correct_answer']
+        model = SubmittedAnswer
+        fields = ['question_id', 'answer_id', 'is_correct_answer', 'submitted_at']
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     correct_count = serializers.SerializerMethodField()
-    confirmed_answers = ConfirmedAnswerSerializer(many=True)
+    submitted_answers = SubmittedAnswerSerializer(many=True)
 
-    def get_correct_count(self, answer):
-        return ConfirmedAnswer.objects.filter(user_profile__user=self.context['request'].user,
-                                              correct_answer=True).count()
+    def get_correct_count(self, user):
+        return user.correct_count()
 
     class Meta:
-        model = ConfirmedAnswer
-        fields = ['confirmed_answers', 'correct_count']
+        model = UserProfile
+        fields = ['user_id', 'submitted_answers', 'correct_count']
