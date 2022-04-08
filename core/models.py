@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from quiz import settings
+from quiz.settings import settings
 
 
 class UserProfile(models.Model):

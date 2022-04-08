@@ -1,7 +1,7 @@
 from .models import UserProfile
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from quiz import settings
+from quiz.settings import settings
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
