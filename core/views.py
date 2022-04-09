@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -11,6 +10,11 @@ from rest_framework.permissions import *
 
 class GroupViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'head', 'options']
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         answers = SubmittedAnswer.objects.filter(user_profile__user=self.request.user)
@@ -43,7 +47,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
 class ResultViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
-        return UserProfile.objects.all()
+        return UserProfile.objects.all().order_by('correct_details__count', 'correct_details__submitted_at')
 
     def get_permissions(self):
         if self.action == 'list':

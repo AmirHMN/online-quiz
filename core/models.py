@@ -10,8 +10,9 @@ class UserProfile(models.Model):
         verbose_name = 'پروفایل کابر'
         verbose_name_plural = 'پروفایل های کاربران'
 
-    def correct_count(self):
-        return SubmittedAnswer.objects.filter(user_profile=self, is_correct_answer=True).count()
+    #
+    # def correct_count(self):
+    #     return SubmittedAnswer.objects.filter(user_profile=self, is_correct_answer=True).count()
 
     def __str__(self):
         return self.user.__str__()
@@ -89,3 +90,15 @@ class SubmittedAnswer(models.Model):
         unique_together = ['user_profile', 'question_id', 'submitted_at']
         verbose_name = 'پاسخ ثبت شده'
         verbose_name_plural = 'پاسخ های ثبت شده'
+
+
+class CorrectDetail(models.Model):
+    count = models.IntegerField(default=0)
+    submitted_at = models.DateField(auto_now_add=True, verbose_name='ثبت شده در')
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='correct_details',
+                                     verbose_name='پروفایل کاربر')
+
+    def save(self, *args, **kwargs):
+        self.count = SubmittedAnswer.objects.filter(submitted_at=self.submitted_at, user_profile=self.user_profile,
+                                                    is_correct_answer=True).count()
+        super(CorrectDetail, self).save(*args, **kwargs)

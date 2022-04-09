@@ -1,6 +1,6 @@
 from django.db import transaction
 from rest_framework import serializers
-from .models import Question, Answer, Group, SubmittedAnswer, UserProfile
+from .models import Question, Answer, Group, SubmittedAnswer, UserProfile, CorrectDetail
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -42,13 +42,15 @@ class SubmittedAnswerSerializer(serializers.ModelSerializer):
         fields = ['question_id', 'answer_id', 'is_correct_answer', 'submitted_at']
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
-    correct_count = serializers.SerializerMethodField()
-    submitted_answers = SubmittedAnswerSerializer(many=True)
+class CorrectDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CorrectDetail
+        fields = ['count', 'submitted_at']
 
-    def get_correct_count(self, user):
-        return user.correct_count()
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    correct_details = CorrectDetailSerializer(many=True)
 
     class Meta:
         model = UserProfile
-        fields = ['user_id', 'submitted_answers', 'correct_count']
+        fields = ['user_id', 'correct_details']
