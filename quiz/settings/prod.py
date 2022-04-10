@@ -1,6 +1,7 @@
 import os
 from .settings import *
 
+ALLOWED_HOSTS = ['optimals.ir', 'www.optimals.ir']
 DEBUG = False
 SECRET_KEY = os.environ['SECRET_KEY']
 DATABASES = {
@@ -12,3 +13,5 @@ DATABASES = {
         'PASSWORD': os.environ['PASSWORD']
     }
 }
+
+STATIC_ROOT = '/home/optimal1/public_html/static'

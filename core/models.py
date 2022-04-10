@@ -93,12 +93,18 @@ class SubmittedAnswer(models.Model):
 
 
 class CorrectDetail(models.Model):
-    count = models.IntegerField(default=0)
-    submitted_at = models.DateField(auto_now_add=True, verbose_name='ثبت شده در')
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='correct_details',
                                      verbose_name='پروفایل کاربر')
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    national_code = models.CharField(max_length=10, unique=True, verbose_name='کد ملی')
+    submitted_at = models.DateField(auto_now_add=True, verbose_name='ثبت شده در')
+    count = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
+        self.first_name = self.user_profile.user.first_name
+        self.last_name = self.user_profile.user.last_name
+        self.national_code = self.user_profile.user.national_code
         self.count = SubmittedAnswer.objects.filter(submitted_at=self.submitted_at, user_profile=self.user_profile,
                                                     is_correct_answer=True).count()
         super(CorrectDetail, self).save(*args, **kwargs)
