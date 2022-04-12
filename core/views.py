@@ -1,5 +1,6 @@
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from .models import Group, Question, UserProfile, SubmittedAnswer
@@ -34,7 +35,12 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class QuestionViewSet(viewsets.ModelViewSet):
+class QuestionViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
+                      viewsets.GenericViewSet):
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         return Question.objects.filter(group_id=self.kwargs['group_pk'])

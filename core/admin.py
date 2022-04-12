@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Group, Question, Answer, SubmittedAnswer
+from .models import Group, Question, Answer, SubmittedAnswer, CorrectDetail
 
 
 @admin.register(Group)
@@ -18,6 +18,11 @@ class AnswerTabInlineAdmin(admin.TabularInline):
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ['text', 'group']
     inlines = [AnswerTabInlineAdmin]
+
+
+@admin.register(CorrectDetail)
+class CorrectDetailAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(SubmittedAnswer)
