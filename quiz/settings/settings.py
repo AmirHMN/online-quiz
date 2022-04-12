@@ -19,7 +19,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -87,6 +86,9 @@ AUTH_PASSWORD_VALIDATORS = [
     # {
     #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     # },
+    {
+        'NAME': 'account.validators.PhoneNumberValidator',
+    }
 ]
 
 # Internationalization
