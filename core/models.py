@@ -108,3 +108,8 @@ class CorrectDetail(models.Model):
         self.count = SubmittedAnswer.objects.filter(submitted_at=self.submitted_at, user_profile=self.user_profile,
                                                     is_correct_answer=True).count()
         super(CorrectDetail, self).save(*args, **kwargs)
+
+
+class Winner(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
+    won_at = models.DateField(auto_now_add=True, verbose_name='برنده شده در')
