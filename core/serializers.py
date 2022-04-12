@@ -1,6 +1,6 @@
 from django.db import transaction
 from rest_framework import serializers
-from .models import Question, Answer, Group, SubmittedAnswer, UserProfile, CorrectDetail
+from .models import Question, Answer, Group, SubmittedAnswer, UserProfile, CorrectDetail, Winner
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -54,3 +54,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['user_id', 'correct_details']
+
+
+class WinnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Winner
+        fields = ['user', 'won_at']

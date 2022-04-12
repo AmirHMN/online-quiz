@@ -1,10 +1,11 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import ListAPIView,ListCreateAPIView
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from .models import Group, Question, UserProfile, SubmittedAnswer
-from .serializers import QuestionSerializer, GroupSerializer, SubmitAnswerSerializer, UserProfileSerializer
+from .models import Group, Question, UserProfile, SubmittedAnswer, Winner
+from .serializers import QuestionSerializer, GroupSerializer, SubmitAnswerSerializer, UserProfileSerializer, \
+    WinnerSerializer
 import datetime
 from rest_framework.permissions import *
 
@@ -68,3 +69,8 @@ class ResultViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     serializer_class = UserProfileSerializer
+
+
+class WinnerView(ListCreateAPIView):
+    queryset = Winner.objects.all()
+    serializer_class = WinnerSerializer

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Group, Question, Answer, SubmittedAnswer, CorrectDetail
+from .models import Group, Question, Answer, SubmittedAnswer, CorrectDetail, Winner
 
 
 @admin.register(Group)
@@ -23,6 +23,11 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(CorrectDetail)
 class CorrectDetailAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Winner)
+class WinnerAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['user']
 
 
 @admin.register(SubmittedAnswer)

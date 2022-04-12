@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import QuestionViewSet, GroupViewSet, ResultViewSet
+from .views import QuestionViewSet, GroupViewSet, ResultViewSet, WinnerView
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
@@ -11,4 +11,5 @@ group_router.register('questions', QuestionViewSet, basename='question')
 urlpatterns = [
     path('', include(router.urls)),
     path('', include(group_router.urls)),
+    path('winners/', WinnerView.as_view())
 ]
