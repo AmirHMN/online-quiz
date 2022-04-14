@@ -13,5 +13,6 @@ DATABASES = {
         'PASSWORD': os.environ['PASSWORD']
     }
 }
+CORS_ALLOW_ALL_ORIGINS = True
 
 STATIC_ROOT = '/home/optimal1/public_html/static'

@@ -113,3 +113,9 @@ class CorrectDetail(models.Model):
 class Winner(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='کاربر')
     won_at = models.DateField(verbose_name='برنده شده در')
+
+    def full_name(self):
+        return self.user.first_name + ' ' + self.user.last_name
+
+    def __str__(self):
+        return self.user.national_code

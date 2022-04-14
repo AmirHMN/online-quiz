@@ -1,6 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 from .models import Question, Answer, Group, SubmittedAnswer, UserProfile, CorrectDetail, Winner
+from account.models import User
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -59,4 +60,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class WinnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Winner
-        fields = ['user', 'won_at']
+        fields = ['full_name', 'won_at']
